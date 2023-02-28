@@ -1,4 +1,4 @@
-package com.addressbook.springboot.api.security;
+package com.addressbook.springboot.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,9 @@ public class SecurityConfiguration {
 	UserDetailsService userDetailsService(PasswordEncoder encoder) {
 		UserDetails admin = User.withUsername("Bibash").password(encoder.encode("123")).roles("ADMIN").build();
 		UserDetails normaluser = User.withUsername("Kattel").password(encoder.encode("456")).roles("USER").build();
-
+/*
+ * Users are hard coded and stored inMemory
+ */
 		return new InMemoryUserDetailsManager(admin, normaluser);
 
 	}

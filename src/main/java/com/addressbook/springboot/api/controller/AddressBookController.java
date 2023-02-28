@@ -42,7 +42,7 @@ public class AddressBookController {
 	 */
 	@GetMapping("/testroute")
 	public String checkRouteSecurity() {
-		return "This is test endpoint";
+		return "This is endpoint for testing ";
 	}
 
 	/*
