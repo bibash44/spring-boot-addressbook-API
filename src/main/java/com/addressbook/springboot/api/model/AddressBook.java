@@ -8,11 +8,9 @@ import jakarta.persistence.Table;
 
 /*
  * Specifying JPA hibernate annotation for defining its entites and attributes
- */
-@Entity
-/*
  * Providing custom name for the table to be created
  */
+@Entity
 @Table(name = "addressbook")
 public class AddressBook {
 
