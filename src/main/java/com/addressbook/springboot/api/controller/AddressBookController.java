@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,11 +35,24 @@ public class AddressBookController {
 		super();
 		this.addressBookService = addressBookService;
 	}
+	
+
+	/*
+	 * Test route to check authorized URLs
+	 */
+	@GetMapping("/testroute")
+	public String checkRouteSecurity() {
+		return "This is test endpoint";
+	}
 
 	/*
 	 * API to serve all listings of available addressBooks data
 	 */
 	@GetMapping("/all")
+	/*
+	 * Authorizing ADMIN user for this route
+	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<List<AddressBook>> getAllAddressBook() {
 
 		List<AddressBook> addressBookListFromDatabase = addressBookService.getAllAddressBook();
@@ -65,6 +79,10 @@ public class AddressBookController {
 	 * API to serve single data based on id*
 	 */
 	@GetMapping("/{id}")
+	/*
+	 * Authorizing ADMIN user for this route
+	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<AddressBook> getOneAddressBook(@PathVariable Long id) {
 		Optional<AddressBook> data = addressBookService.getAddressBook(id);
 
@@ -84,6 +102,10 @@ public class AddressBookController {
 	 * Returns the Object of Newly created data
 	 */
 	@PostMapping
+	/*
+	 * Authorizing Normal user for this route
+	 */
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<AddressBook> addAddressBook(@RequestBody AddressBook newaddressBook) {
 		AddressBook addressBook = addressBookService.addAddressBook(newaddressBook);
 		return new ResponseEntity<>(addressBook, HttpStatus.CREATED);
@@ -96,6 +118,10 @@ public class AddressBookController {
 	 */
 
 	@PutMapping("/{id}")
+	/*
+	 * Authorizing ADMIN user for this route
+	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<AddressBook> updateAddressBook(@PathVariable Long id,
 			@RequestBody AddressBook addressBookDataToUpdate) {
 		AddressBook addressBook = addressBookService.updateAddressBook(id, addressBookDataToUpdate);
@@ -109,6 +135,10 @@ public class AddressBookController {
 	 */
 
 	@DeleteMapping("/{id}")
+	/*
+	 * Authorizing ADMIN user for this route
+	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<HttpStatus> deleteAddressBook(@PathVariable Long id) {
 		addressBookService.deleteAddressBook(id);
 		return new ResponseEntity<>(HttpStatus.OK);
